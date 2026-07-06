@@ -44,6 +44,35 @@ pip install -r requirements.txt
 
 ## 🖥️ Sample Output
 
+🖥️ Sample Output
+=========================================================
+                 PAWPAL+ DAILY CARE PLAN
+=========================================================
+
+Owner: Sarah Johnson
+
+Time         Pet        Activity                     Duration
+--------------------------------------------------------------
+08:00 AM     Luna       Feed breakfast               10 min
+08:10 AM     Luna       Morning walk                 30 min
+08:45 AM     Charlie    Give medication              5 min
+09:00 AM     Charlie    Playtime                     20 min
+09:20 AM     Luna       Grooming                     15 min
+
+=========================================================
+Pets Scheduled:      2
+Tasks Completed:     5
+Owner Time Used:     80 min
+=========================================================
+🧪 Testing PawPal+
+# Run all unit tests
+pytest
+
+# Run tests with coverage
+pytest --cov
+
+
+
 Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
 
 ```
@@ -62,13 +91,42 @@ pytest
 
 # Run with coverage:
 pytest --cov
+
 ```
+================================================== tests coverage ==================================================
+_________________________________ coverage: platform win32, python 3.13.7-final-0 __________________________________
+
+Name                   Stmts   Miss  Cover
+------------------------------------------
+conftest.py                3      0   100%
+pawpal_system.py         119     59    50%
+tests\test_pawpal.py      28      0   100%
+------------------------------------------
+TOTAL                    150     59    61%
+================================================ 4 passed in 0.38s =================================================
+
+(.venv) C:\Users\themb\OneDrive\Documents\GitHub\ai110-module2show-pawpal-starter>
+
 
 Sample test output:
 
 ```
 # Paste your pytest output here
 ```
+=============================================== test session starts ================================================
+platform win32 -- Python 3.13.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\themb\OneDrive\Documents\GitHub\ai110-module2show-pawpal-starter\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\themb\OneDrive\Documents\GitHub\ai110-module2show-pawpal-starter
+plugins: cov-7.1.0
+collected 4 items                                                                                                   
+
+tests/test_pawpal.py::test_task_starts_incomplete_and_marks_complete PASSED                                   [ 25%]
+tests/test_pawpal.py::test_add_task_increases_pet_task_count PASSED                                           [ 50%]
+tests/test_pawpal.py::test_scheduler_sorts_by_priority PASSED                                                 [ 75%]
+tests/test_pawpal.py::test_filter_respects_available_time PASSED                                              [100%]
+
+================================================ 4 passed in 0.17s =================================================
+
 
 ## 📐 Smarter Scheduling
 

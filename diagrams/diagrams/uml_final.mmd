@@ -1,73 +1,158 @@
 classDiagram
+    %% ================= Core Domain (pawpal_system.py) =================
+    class Owner {
+        +str name
+        +int available_minutes
+        +str preferences
+        +get_available_minutes() int
+    }
 
-class Owner {
-    +String name
-    +int available_minutes
-    +String preferences
-    +get_available_minutes()
-}
+    class Pet {
+        +str name
+        +str species
+        +int age
+        +str breed
+        +str special_needs
+        +list~Task~ tasks
+        +add_task(task) void
+    }
 
-class Pet {
-    +String name
-    +String species
-    +int age
-    +String breed
-    +String special_needs
-    +List~Task~ tasks
-    +add_task(task)
-}
+    class Task {
+        +str title
+        +int duration_minutes
+        +str priority
+        +str recurrence
+        +str notes
+        +bool completed
+        +bool owner_required
+        +date last_completed_date
+        +str preferred_time
+        +str concurrent_group
+        +is_high_priority() bool
+        +is_due(today) bool
+        +mark_complete(on_date) void
+        +apply_edit(...) void
+    }
 
-class Task {
-    +String title
-    +int duration_minutes
-    +String priority
-    +String recurrence
-    +String due_time
-    +String notes
-    +bool completed
-    +bool owner_required
-    +is_high_priority()
-    +mark_complete()
-}
+    %% ================= Scheduling: multi-pet (primary path, used by app.py/main.py) =================
+    class MultiPetScheduler {
+        +Owner owner
+        +list~tuple~ pet_tasks
+        +generate_plan(today) MultiPetPlan
+    }
 
-class Scheduler {
-    +Owner owner
-    +Pet pet
-    +List~Task~ tasks
-    +sort_tasks()
-    +filter_by_time()
-    +generate_plan()
-}
+    class MultiPetPlan {
+        +list~tuple~ scheduled_slots
+        +int total_owner_minutes
+        +list~tuple~ unscheduled
+        +list~tuple~ missed_anchors
+        +add_slot(time, pet, task, background, count_minutes) void
+    }
 
-class DailyPlan {
-    +List~(time, task)~ scheduled_slots
-    +int total_minutes_used
-    +List~String~ reasoning
-    +add_slot()
-    +display()
-    +get_summary()
-}
+    class ConflictDetection {
+        <<utility functions>>
+        +find_time_conflicts(pet_tasks, today) list
+        +confirm_concurrent_group(group) void
+        +unscheduled_minutes_needed(unscheduled) int
+    }
 
-class MultiPetScheduler {
-    +Owner owner
-    +List~(Pet, List~Task~)~ pet_tasks
-    +generate_plan()
-}
+    %% ================= Scheduling: single-pet (legacy path, still unit-tested) =================
+    class Scheduler {
+        +Owner owner
+        +Pet pet
+        +list~Task~ tasks
+        +sort_tasks(tasks) list
+        +filter_by_time(available_minutes, tasks) tuple
+        +generate_plan(today) DailyPlan
+    }
 
-class MultiPetPlan {
-    +List~(time, pet, task, background)~ scheduled_slots
-    +int total_owner_minutes
-    +add_slot()
-}
+    class DailyPlan {
+        +list~tuple~ scheduled_slots
+        +int total_minutes_used
+        +list~str~ reasoning
+        +list~Task~ unscheduled
+        +add_slot(time, task) void
+        +display() str
+        +get_summary() str
+    }
 
-Owner "1" --> "*" Pet : owns
-Pet "1" --> "*" Task : has
-Scheduler --> Owner : uses
-Scheduler --> Pet : schedules
-Scheduler --> Task : processes
-Scheduler --> DailyPlan : creates
-MultiPetScheduler --> MultiPetPlan : creates
+    %% ================= AI subsystem (ai/) =================
+    class LLMClient {
+        <<interface>>
+        +generate(prompt) str
+    }
 
+    class GeminiClient {
+        +generate(prompt) str
+    }
 
+    class TaskParser {
+        <<ai.parser>>
+        +parse_pet_description(text, llm_client) ParsedPetResult
+        +parse_tasks_from_description(text, pet, llm_client) ParsedTaskBatchResult
+        +suggest_tasks_for_pet(pet, llm_client, count) ParsedTaskBatchResult
+    }
 
+    class ParsedPetResult {
+        +Pet pet
+        +list warnings
+        +str error
+    }
 
+    class ParsedTaskBatchResult {
+        +list~Task~ tasks
+        +list warnings
+        +list dropped
+        +str error
+    }
+
+    class GuardrailValidator {
+        <<ai.guardrails>>
+        +validate_task_fields(data, corpus_context) ValidationResult
+        +validate_pet_fields(data) ValidationResult
+    }
+
+    class ValidationResult {
+        +bool ok
+        +dict cleaned
+        +list issues
+    }
+
+    class CareCorpus {
+        <<ai.corpus>>
+        +retrieve(species, query_text, top_k) list
+        +load_corpus(path) list
+    }
+
+    class PetPhotoService {
+        <<ai.pet_photos>>
+        +get_pet_photo_url(pet) str
+    }
+
+    %% ================= Relationships =================
+    Pet "1" *-- "*" Task : owns
+    GeminiClient ..|> LLMClient : implements
+
+    MultiPetScheduler --> Owner : uses
+    MultiPetScheduler --> Pet : schedules
+    MultiPetScheduler --> Task : processes
+    MultiPetScheduler --> MultiPetPlan : creates
+    MultiPetScheduler ..> ConflictDetection : consults
+    MultiPetPlan --> Task : references
+    MultiPetPlan --> Pet : references
+
+    Scheduler --> Owner : uses
+    Scheduler --> Pet : uses
+    Scheduler --> Task : processes
+    Scheduler --> DailyPlan : creates
+    DailyPlan --> Task : references
+
+    TaskParser ..> LLMClient : calls
+    TaskParser --> GuardrailValidator : validates via
+    TaskParser --> CareCorpus : grounds via
+    TaskParser --> ParsedPetResult : returns
+    TaskParser --> ParsedTaskBatchResult : returns
+    TaskParser --> Pet : creates
+    TaskParser --> Task : creates
+    GuardrailValidator --> ValidationResult : returns
+    PetPhotoService --> Pet : looks up photo for

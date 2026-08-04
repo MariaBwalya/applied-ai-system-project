@@ -2,5 +2,6 @@ __pycache__/
 .venv/
 .venv_new/
 .pytest_cache/
-.DS_Store.coverage 
-.coverage 
+.DS_Store
+.env
+.env.example

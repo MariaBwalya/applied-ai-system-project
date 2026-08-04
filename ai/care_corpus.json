@@ -1,0 +1,92 @@
+[
+  {
+    "id": "dog_exercise",
+    "species": "dog",
+    "category": "exercise",
+    "keywords": ["walk", "walks", "exercise", "run", "running", "play", "outside", "yard", "fetch"],
+    "guidance": "Adult dogs typically need 20-60 minutes of physical exercise daily, often split across one or two walks.",
+    "suggested_duration_minutes": 30,
+    "suggested_priority": "high",
+    "suggested_recurrence": "daily"
+  },
+  {
+    "id": "dog_feeding",
+    "species": "dog",
+    "category": "feeding",
+    "keywords": ["feed", "feeding", "food", "meal", "kibble", "breakfast", "dinner", "eat"],
+    "guidance": "Most adult dogs are fed once or twice a day at consistent times; puppies may need more frequent meals.",
+    "suggested_duration_minutes": 10,
+    "suggested_priority": "high",
+    "suggested_recurrence": "daily"
+  },
+  {
+    "id": "cat_feeding",
+    "species": "cat",
+    "category": "feeding",
+    "keywords": ["feed", "feeding", "food", "meal", "kibble", "wet food", "eat"],
+    "guidance": "Cats often do best with two or more small measured meals a day rather than one large meal.",
+    "suggested_duration_minutes": 10,
+    "suggested_priority": "high",
+    "suggested_recurrence": "daily"
+  },
+  {
+    "id": "cat_litter",
+    "species": "cat",
+    "category": "hygiene",
+    "keywords": ["litter", "box", "scoop", "clean", "tray"],
+    "guidance": "Litter boxes should be scooped at least once daily to keep cats comfortable using them.",
+    "suggested_duration_minutes": 5,
+    "suggested_priority": "medium",
+    "suggested_recurrence": "daily"
+  },
+  {
+    "id": "medication_any",
+    "species": "any",
+    "category": "health",
+    "keywords": ["medication", "meds", "medicine", "pill", "dose", "treatment"],
+    "guidance": "Medication is usually time-sensitive and often given alongside a meal for consistency and to ease digestion.",
+    "suggested_duration_minutes": 10,
+    "suggested_priority": "high",
+    "suggested_recurrence": "daily"
+  },
+  {
+    "id": "grooming_any",
+    "species": "any",
+    "category": "hygiene",
+    "keywords": ["groom", "grooming", "brush", "brushing", "bath", "nails", "trim"],
+    "guidance": "Grooming frequency depends on coat type, but brief brushing sessions a few times a week help prevent matting and shedding buildup.",
+    "suggested_duration_minutes": 15,
+    "suggested_priority": "medium",
+    "suggested_recurrence": "weekly"
+  },
+  {
+    "id": "vet_checkup_any",
+    "species": "any",
+    "category": "health",
+    "keywords": ["vet", "veterinarian", "checkup", "check-up", "appointment", "vaccine", "vaccination"],
+    "guidance": "Routine veterinary checkups are typically annual for healthy adult pets, more frequent for young, senior, or unwell animals.",
+    "suggested_duration_minutes": 60,
+    "suggested_priority": "medium",
+    "suggested_recurrence": "once"
+  },
+  {
+    "id": "senior_pet_care_any",
+    "species": "any",
+    "category": "health",
+    "keywords": ["senior", "elderly", "old", "aging", "joint", "arthritis", "mobility"],
+    "guidance": "Senior pets often benefit from shorter, gentler activity sessions and closer monitoring of mobility and appetite.",
+    "suggested_duration_minutes": 20,
+    "suggested_priority": "medium",
+    "suggested_recurrence": "daily"
+  },
+  {
+    "id": "other_species_general",
+    "species": "other",
+    "category": "habitat",
+    "keywords": ["cage", "habitat", "tank", "enclosure", "clean", "bedding", "terrarium"],
+    "guidance": "Small mammals, birds, and reptiles generally need regular habitat cleaning and fresh water/food appropriate to the species.",
+    "suggested_duration_minutes": 20,
+    "suggested_priority": "medium",
+    "suggested_recurrence": "weekly"
+  }
+]
